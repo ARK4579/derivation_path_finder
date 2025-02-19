@@ -7213,7 +7213,7 @@ button.close {
                         <div class="form-group">
                             <label for="existingXpubSeedPhrase" class="col-sm-2 control-label">Seed/Recovery Phrase</label>
                             <div class="col-sm-10">
-                                <textarea id="existingXpubSeedPhrase" class="existingXpubSeedPhrase private-data form-control" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"></textarea>
+                              <input type="password" id="existingXpubSeedPhrase" class="existingXpubSeedPhrase private-data form-control" />
                             </div>
                         </div>
                         <div class="form-group">
@@ -29773,9 +29773,11 @@ window.Entropy = new (function() {
 
           if (foundPath===null) {
             let commonPaths = [];
+            let pathsSearched = "";
             for (const searchPath of searchDerivationPaths) {
+              pathsSearched += searchPath.replace("/i'/j'", `/${existingXpubIMin}->${existingXpubIMax}'/${existingXpubJMin}->${existingXpubJMax}'`)
               for (let i = existingXpubIMin; i <= existingXpubIMax; i++) {
-                for (let j = existingXpubIMin; j <= existingXpubJMax; j++) {
+                for (let j = existingXpubJMin; j <= existingXpubJMax; j++) {
                   commonPaths.push(searchPath.replace("/i'/j'", `/${i}'/${j}'`));
                 }
               }
@@ -29802,7 +29804,7 @@ window.Entropy = new (function() {
               }
             }
             if(foundPath===null) {
-              foundPath = "Derivation Path not found!";
+              foundPath = `Derivation Path not found! Searched paths: ${pathsSearched}`;
             }
           }
         } catch (e) {
